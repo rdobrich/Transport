@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Prijevozni listovi</string>
+    <string name="action_settings">Postavke</string>
+    <string name="placeholder">placeholder</string>
+    <string name="add_to_cart">Add to cart</string>
+
+</resources>
