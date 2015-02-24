@@ -1,13 +1,17 @@
 package hr.aktiva_info.transport;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import hr.aktiva_info.transport.data.SOAPExec;
 import hr.aktiva_info.transport.data.ZbirnaLista;
 
 
@@ -80,7 +84,26 @@ implements ZbirnaListaListFragment.Callbacks
 
             return true;
         }
+        if (id == R.id.action_seop) {
+
+
+                SOAPExec task = new SOAPExec("mobile.make_login -1,-1 ,1,1,1 ", "test", this);
+                //passes values for the urls string array
+                task.execute();
+
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void do_soap_postback(String json){
+        //AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Log.d("TRANSPORT", "SOAP-do_soap_postback  " + json);
+//        builder.setMessage(json)
+//                .setTitle("SOAP Test")
+//                .create()
+//                .show();
+
     }
 
     @Override

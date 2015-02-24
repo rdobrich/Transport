@@ -37,7 +37,7 @@ public class ZbirnaListaListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         zbirnalistaDB=new ZbirnaListaDB(getActivity());
-        zbirnalistaDB.InitTestData();
+        //zbirnalistaDB.InitTestData();
 
         zbirne_liste = zbirnalistaDB.getZbirneListe();
         ZbirnaListaArrayAdapter adapter = new ZbirnaListaArrayAdapter(getActivity(),
