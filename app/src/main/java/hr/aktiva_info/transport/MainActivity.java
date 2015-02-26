@@ -24,11 +24,18 @@ implements ZbirnaListaListFragment.Callbacks
 
     public static final String ZBIRNA_LISTA_BUNDLE = "ZBIRNA_LISTA_BUNDLE";
     private static final int REQUEST_CODE = 1001;
+    private  ZbirnaListaListFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        fragment= new ZbirnaListaListFragment();
+        getFragmentManager().beginTransaction()
+                .add(R.id.listContainer,fragment)
+                .commit();
+
 
         if (findViewById(R.id.detailContainer)!= null ){
             isTwoPane=true;
@@ -87,7 +94,7 @@ implements ZbirnaListaListFragment.Callbacks
         if (id == R.id.action_seop) {
 
 
-                SOAPExec task = new SOAPExec("mobile.make_login -1,-1 ,1,1,1 ", "test", this);
+                SOAPExec task = new SOAPExec("mobile.get_zbirni_prijevozni_list 25 ", "zbirna_lista", this);
                 //passes values for the urls string array
                 task.execute();
 
@@ -96,9 +103,17 @@ implements ZbirnaListaListFragment.Callbacks
         return super.onOptionsItemSelected(item);
     }
 
-    public void do_soap_postback(String json){
+    public void do_soap_postback(){
         //AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        Log.d("TRANSPORT", "SOAP-do_soap_postback  " + json);
+
+        ZbirnaListaListFragment fragment= new ZbirnaListaListFragment();
+        getFragmentManager().beginTransaction()
+                .replace(R.id.listContainer,fragment)
+                .commit();
+
+
+        //fragment.refreshAdapter();
+        Log.d("TRANSPORT", "Refresh adapter  " );
 //        builder.setMessage(json)
 //                .setTitle("SOAP Test")
 //                .create()

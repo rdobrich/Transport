@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.CursorAdapter;
+import android.widget.TextView;
 
 import hr.aktiva_info.transport.data.ZbirnaLista;
 import hr.aktiva_info.transport.data.ZbirnaListaDB;
@@ -23,7 +24,7 @@ public class ZbirnaListaListFragment extends ListFragment {
     private List<ZbirnaLista> zbirne_liste ;
     private ZbirnaListaDB zbirnalistaDB;
     private  Callbacks activity;
-
+    private ZbirnaListaArrayAdapter adapter;
 
     private ListView zbirnalistaListView; // the ListActivity's ListView
     private CursorAdapter zbirnalistaAdapter; // adapter for ListView
@@ -40,10 +41,12 @@ public class ZbirnaListaListFragment extends ListFragment {
         //zbirnalistaDB.InitTestData();
 
         zbirne_liste = zbirnalistaDB.getZbirneListe();
-        ZbirnaListaArrayAdapter adapter = new ZbirnaListaArrayAdapter(getActivity(),
+        adapter = new ZbirnaListaArrayAdapter(getActivity(),
                 R.layout.zbirna_lista_listitem,
                 zbirne_liste);
+
         setListAdapter(adapter);
+
     }
 
     @Override
@@ -51,6 +54,11 @@ public class ZbirnaListaListFragment extends ListFragment {
                              ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.zbirna_lista_list_fragment, container, false);
+        TextView tv = (TextView) rootView.findViewById(R.id.zbirna_lista);
+        if (zbirne_liste.size()>0) {
+            Integer broj = zbirne_liste.get(0).getId_zbirne_liste();
+            tv.setText(broj.toString());
+        }
         return rootView;
     }
 
@@ -68,5 +76,10 @@ public class ZbirnaListaListFragment extends ListFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.activity= (Callbacks) activity;
+    }
+
+    public void refreshAdapter() {
+        zbirne_liste = zbirnalistaDB.getZbirneListe();
+        this.adapter.notifyDataSetChanged();
     }
 }

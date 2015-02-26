@@ -6,13 +6,11 @@
     android:orientation="horizontal"
     tools:context=".MainActivity">
 
-    <fragment
-        android:id="@+id/listFragment"
-        android:name="hr.aktiva_info.transport.ZbirnaListaListFragment"
+    <FrameLayout
+        android:id="@+id/listContainer"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="fill_parent"
-        tools:layout="@layout/zbirna_lista_list_fragment"/>
+        android:layout_height="fill_parent"></FrameLayout>
 
     <FrameLayout
         android:id="@+id/detailContainer"

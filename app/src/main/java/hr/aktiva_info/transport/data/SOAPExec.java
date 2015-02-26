@@ -37,6 +37,8 @@ public class SOAPExec
     private String _executeString = "";
     private String _method ="";
     ProgressDialog _dialog;
+    private ZbirnaListaDB zbirnalistaDB;
+
 
     public SOAPExec(String executeString, String method, Context context) {
         this._executeString = executeString;
@@ -61,7 +63,7 @@ public class SOAPExec
         String webResponse = "";
         try{
             final String NAMESPACE = "http://www.aktiva-info.hr/";
-            final String URL = "http://ai-virtual-01.cloudapp.net:6555/DBInterfaces/DatabaseInterface.asmx";
+            final String URL = "http://www.aktiva-info.hr/DBI/databaseInterface.asmx";
             //final String URL = "http://www.aktiva-info.hr/DBI/databaseInterface.asmx";
             final String SOAP_ACTION = "http://www.aktiva-info.hr/ExecuteSQLJSON";
             final String METHOD_NAME = "ExecuteSQLJSON";
@@ -71,7 +73,7 @@ public class SOAPExec
             PropertyInfo server =new PropertyInfo();
             server.setName("serverName");
             //gets the first element from urls array
-            server.setValue("ai-virtual-01.cloudapp.net,11967");
+            server.setValue("10.10.0.8");
             //server.setValue("10.20.0.11");
             server.setType(String.class);
             request.addProperty(server);
@@ -79,21 +81,21 @@ public class SOAPExec
             PropertyInfo dbname =new PropertyInfo();
             dbname.setName("dbName");
             //gets the first element from urls array
-            dbname.setValue("izleti_marinero");
+            dbname.setValue("servis24");
             dbname.setType(String.class);
             request.addProperty(dbname);
 
             PropertyInfo username =new PropertyInfo();
             username.setName("userName");
             //gets the first element from urls array
-            username.setValue("mobile_user_izleti");
+            username.setValue("radovan");
             username.setType(String.class);
             request.addProperty(username);
 
             PropertyInfo pwd =new PropertyInfo();
             pwd.setName("pwd");
             //gets the first element from urls array
-            pwd.setValue("mobile5");
+            pwd.setValue("DELTA5");
             pwd.setType(String.class);
             request.addProperty(pwd);
 
@@ -115,11 +117,6 @@ public class SOAPExec
             SoapPrimitive response = (SoapPrimitive)envelope.getResponse();
             webResponse = response.toString();
         }
-//        catch(Exception e){
-//
-//            Log.d("TRANSPORT", "SOAP-Pogreška");
-//            _dialog.dismiss();
-//        }
 
      catch (SocketTimeoutException t) {
          Log.d("TRANSPORT", "SOAP-Pogreška t");
@@ -134,34 +131,28 @@ public class SOAPExec
         return webResponse;
     }
 
+
     @Override
     protected void onPostExecute(String result) {
-        _dialog.dismiss();
-        Log.d("TRANSPORT", "SOAP- Ok");
-        if(_method.equals("test")) {
+
+        zbirnalistaDB=(ZbirnaListaDB) new ZbirnaListaDB(_context);
+
+        if(_method.equals("zbirna_lista")) {
             Log.d("TRANSPORT", "SOAP- Ok-method test");
             Log.d("TRANSPORT", "SOAP- " + result);
-            MainActivity ma = (MainActivity) _context;
-            ma.do_soap_postback(result);
+
+
+            try {
+                zbirnalistaDB.UcitajPodatkeIzSOAP(result);
+                MainActivity ma = (MainActivity) _context;
+                ma.do_soap_postback();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            _dialog.dismiss();
+            Log.d("TRANSPORT", "SOAP- Finish");
         }
 
-          // Context ma = (Context) _context;
-          // ma.dataPostback(result);}
-//        if(_method.equals("printPostback")){
-//            MainActivity ma = (MainActivity) _context;
-//            ma.printPostback(result);}
-//        if(_method.equals("logInPostback")){
-//            LogIn li = (LogIn) _context;
-//            li.logInPostback(result);}
-//        if(_method.equals("racunPostback")){
-//            BlagajnaActivity ba = (BlagajnaActivity) _context;
-//            ba.racunPostback(result);}
-//        if(_method.equals("racunPrintPostback")){
-//            BlagajnaActivity ba = (BlagajnaActivity) _context;
-//            ba.racunPrintPostback(result);}
-//        if(_method.equals("uplataIsplataPostback")){
-//            BlagajnaActivity ba = (BlagajnaActivity) _context;
-//            ba.uplataIsplataPostback(result);}
     }
 
     private boolean isNetworkAvailable() {
@@ -169,5 +160,7 @@ public class SOAPExec
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
+
+
 }
 

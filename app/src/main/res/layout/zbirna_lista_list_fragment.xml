@@ -8,12 +8,23 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".MainActivity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/zbirna_lista"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="#b5b5b5"
-        android:dividerHeight="1dp"
+        android:layout_below="@+id/zbirna_lista"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="5dp"
         android:listSelector="@drawable/list_selector"></ListView>
+
+
 
 </RelativeLayout>

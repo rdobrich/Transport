@@ -5,6 +5,7 @@
     android:layout_margin="@dimen/activity_horizontal_margin"
     android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:background="@drawable/gradient_bg"
     android:paddingTop="10dp">
 
     <TextView

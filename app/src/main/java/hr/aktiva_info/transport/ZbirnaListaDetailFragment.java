@@ -22,7 +22,7 @@ public class ZbirnaListaDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle b = getArguments();
-        if (b != null && b.containsKey(ZbirnaLista.ZL_ID)) {
+        if (b != null && b.containsKey(ZbirnaLista.ZL_BROJ_PL)) {
             zbirna_lista=new ZbirnaLista(b);
         }
     }

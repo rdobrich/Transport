@@ -3,20 +3,22 @@ package hr.aktiva_info.transport.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import hr.aktiva_info.transport.data.ZbirnaLista;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class ZbirnaListaDB extends SQLiteOpenHelper {
 
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 6;
 
     // Database Name
     private static final String DATABASE_NAME = "transport";
@@ -25,13 +27,16 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
     private static final String TABLE_ZBIRNA_LISTA = "zbirna_lista";
 
     // Contacts Table Columns names
-    private static final String KEY_ID = "KEY_ID";
-    private static final String FIELD_I_RBR = "rbr";
-    private static final String FIELD_I_KOMITENT = "id_komitenta";
-    private static final String FIELD_S_NAZIV = "naziv_komitenta";
-    private static final String FIELD_S_ADRESA = "adresa_komitenta";
-    private static final String FIELD_I_KOLETA = "koleta";
-    private static final String FIELD_D_TEZINA = "tezina";
+    public static final String KEY_ID = "KEY_ID";
+    public static final String FIELD_I_BROJ_PL = "broj_prijevoznog_lista";
+    public static final String FIELD_I_BROJ_PL_ZBIRNI = "id_pl_zbirni";
+    public static final String FIELD_I_KOMITENT = "id_komitenta";
+    public static final String FIELD_S_NAZIV = "naziv_primatelja";
+    public static final String FIELD_S_ADRESA = "adresa_primatelja";
+    public static final String FIELD_S_TELEFON = "telefon_primatelja";
+    public static final String FIELD_S_NAPOMENA = "napomena";
+    public static final String FIELD_I_KOLETA = "koleta";
+    public static final String FIELD_D_TEZINA = "tezina";
 
     public ZbirnaListaDB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -42,10 +47,13 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_ZBIRNA_LISTA + "("
                 + KEY_ID + " INTEGER PRIMARY KEY"
-                + ", "+ FIELD_I_RBR + " INTEGER"
+                + ", "+ FIELD_I_BROJ_PL + " INTEGER"
+                + ", "+ FIELD_I_BROJ_PL_ZBIRNI + " INTEGER"
                 + ", "+ FIELD_I_KOMITENT + " INTEGER"
                 + ", "+ FIELD_S_NAZIV + " TEXT"
                 + ", "+ FIELD_S_ADRESA + " TEXT"
+                + ", "+ FIELD_S_TELEFON + " TEXT"
+                + ", "+ FIELD_S_NAPOMENA + " TEXT"
                 + ", "+ FIELD_I_KOLETA + " INTEGER"
                 + ", "+ FIELD_D_TEZINA + " DECIMAL(15,3)"
                 + ")";
@@ -73,10 +81,13 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_ID,zbirnalista.getId_zbirne_liste());
-        values.put(FIELD_I_RBR,zbirnalista.getRbr());
+        values.put(KEY_ID,zbirnalista.getBroj_prijevoznog_lista());
+        values.put(FIELD_I_BROJ_PL,zbirnalista.getBroj_prijevoznog_lista());
+        values.put(FIELD_I_BROJ_PL_ZBIRNI,zbirnalista.getId_zbirne_liste());
         values.put(FIELD_I_KOMITENT,zbirnalista.getId_komitenta());
         values.put(FIELD_S_NAZIV, zbirnalista.getNaziv_komitenta());
+        values.put(FIELD_S_TELEFON, zbirnalista.getTelefon_primatelja());
+        values.put(FIELD_S_NAPOMENA, zbirnalista.getNapomena());
         values.put(FIELD_S_ADRESA, zbirnalista.getAdresa_komitenta());
         values.put(FIELD_I_KOLETA, zbirnalista.getKoleta());
         values.put(FIELD_D_TEZINA, zbirnalista.getTezina());
@@ -91,7 +102,7 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_ZBIRNA_LISTA, new String[] { KEY_ID,
-                        FIELD_I_RBR, FIELD_I_KOMITENT,FIELD_S_NAZIV,FIELD_S_ADRESA,FIELD_I_KOLETA,FIELD_D_TEZINA }, KEY_ID + "=?",
+                        FIELD_I_BROJ_PL, FIELD_I_KOMITENT,FIELD_S_NAZIV,FIELD_S_ADRESA,FIELD_S_TELEFON,FIELD_S_NAPOMENA,FIELD_I_KOLETA,FIELD_D_TEZINA }, KEY_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
@@ -102,8 +113,10 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
                 Integer.parseInt(cursor.getString(2)),//id_komitenta
                 cursor.getString(3),//naziv komitenta
                 cursor.getString(4),//adresa
-                Integer.parseInt(cursor.getString(5)),//koleta
-                Double.valueOf(  cursor.getString(6)) //tezina
+                cursor.getString(5),//telefon
+                cursor.getString(6),//napomena
+                Integer.parseInt(cursor.getString(7)),//koleta
+                Double.valueOf(  cursor.getString(8)) //tezina
                 );
 
         return zbirnalista;
@@ -120,20 +133,23 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
         //Cursor cursor = db.rawQuery(selectQuery, null);
 
         Cursor cursor = db.query(TABLE_ZBIRNA_LISTA, new String[] { KEY_ID,
-                        FIELD_I_RBR, FIELD_I_KOMITENT,FIELD_S_NAZIV,FIELD_S_ADRESA,FIELD_I_KOLETA,FIELD_D_TEZINA }, null,
+                        FIELD_I_BROJ_PL, FIELD_I_KOMITENT,FIELD_S_NAZIV,FIELD_S_ADRESA,FIELD_S_TELEFON,FIELD_S_NAPOMENA,FIELD_I_KOLETA,FIELD_D_TEZINA}, null,
                 null, null, null, null, null);
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 ZbirnaLista zbirnalista = new ZbirnaLista(
-                (Integer.parseInt(cursor.getString(0))),
-                (Integer.parseInt(cursor.getString(1))),
-                (Integer.parseInt(cursor.getString(2))),
-                (cursor.getString(3)),
-                (cursor.getString(4)),
-                (Integer.parseInt(cursor.getString(5))),
-                (Double.valueOf(  cursor.getString(6))));
+                        Integer.parseInt(cursor.getString(0)),// id zbirne liste
+                        Integer.parseInt(cursor.getString(1)),//rbr
+                        Integer.parseInt(cursor.getString(2)),//id_komitenta
+                        cursor.getString(3),//naziv komitenta
+                        cursor.getString(4),//adresa
+                        cursor.getString(5),//telefon
+                        cursor.getString(6),//napomena
+                        Integer.parseInt(cursor.getString(7)),//koleta
+                        Double.valueOf(  cursor.getString(8)) //tezina
+                );
                 // Adding contact to list
                 zbirneliste.add(zbirnalista);
             } while (cursor.moveToNext());
@@ -144,12 +160,14 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
     }
 
 
-    public void InitTestData(){
-        addContact( new ZbirnaLista(1,1,1,"Komitent 1","Adresa 1",5,25.56));
-        addContact( new ZbirnaLista(2,2,1,"Komitent 2","Adresa 2",55,225.6));
-        addContact( new ZbirnaLista(3,3,1,"Komitent 3","Adresa 3",65,255));
 
-    }
+
+//    public void InitTestData(){
+//        addContact( new ZbirnaLista(1,1,1,"Komitent 1","Adresa 1","telefon1","napomena1",5,25.56));
+//        addContact( new ZbirnaLista(2,2,1,"Komitent 2","Adresa 2","telefon2","napomena2",55,225.6));
+//        addContact( new ZbirnaLista(3,3,1,"Komitent 3","Adresa 3","telefon3","napomena3",65,255));
+//
+//    }
 /*
     // Updating single contact
     public int updateContact(Contact contact) {
@@ -163,15 +181,14 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
         return db.update(TABLE_ZBIRNA_LISTA, values, KEY_ID + " = ?",
                 new String[] { String.valueOf(contact.getID()) });
     }
-
+*/
     // Deleting single contact
-    public void deleteContact(Contact contact) {
+    public void deleteAllListu( ) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_CONTACTS, KEY_ID + " = ?",
-                new String[] { String.valueOf(contact.getID()) });
+        db.delete(TABLE_ZBIRNA_LISTA,null,null);
         db.close();
     }
-*/
+
 
     // Getting contacts Count
     public int getListaCount() {
@@ -183,5 +200,72 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
         // return count
         return cursor.getCount();
     }
+
+
+    public void UcitajPodatkeIzSOAP(String result ) throws JSONException {
+        JSONObject jsonResponse = null;
+        try {
+            jsonResponse = new JSONObject(result);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            JSONObject jsonInnerObjectPodaci = jsonResponse.getJSONObject("podaci");
+            JSONObject jsonInnerObjectLista = jsonInnerObjectPodaci.getJSONObject("lista");
+            //JSONArray json_pl = jsonInnerObjectLista.optJSONArray("pl");
+            deleteAllListu();
+            try {
+                JSONArray json_pl = jsonInnerObjectLista.getJSONArray("pl");
+                for(int i = 0; i<json_pl.length();i++) {
+                    JSONObject jsonChildNode = json_pl.getJSONObject(i);
+                    String key_id = jsonChildNode.optString("@key_id");
+                    int id = Integer.parseInt(key_id);
+                    if (id > 0) {
+                        ZbirnaLista zbirnalista = new ZbirnaLista(
+                                Integer.parseInt(jsonChildNode.optString("@" + FIELD_I_BROJ_PL_ZBIRNI)),
+                                Integer.parseInt(jsonChildNode.optString("@" + FIELD_I_BROJ_PL)),
+                                Integer.parseInt(jsonChildNode.optString("@" + FIELD_I_KOMITENT)),
+                                jsonChildNode.optString("@" + FIELD_S_NAZIV),
+                                jsonChildNode.optString("@" + FIELD_S_ADRESA),
+                                jsonChildNode.optString("@" + FIELD_S_TELEFON),
+                                jsonChildNode.optString("@" + FIELD_S_NAPOMENA),
+                                Integer.parseInt(jsonChildNode.optString("@" + FIELD_I_KOLETA)),
+                                Double.parseDouble(jsonChildNode.optString("@" + FIELD_D_TEZINA))
+                        );
+
+                        addContact(zbirnalista);
+                    }
+                }
+            }
+                catch (JSONException e) {
+                // nije array
+                    JSONObject jsonInnerObjectPL = jsonInnerObjectLista.getJSONObject("pl");
+                    ZbirnaLista zbirnalista = new ZbirnaLista(
+                            Integer.parseInt(jsonInnerObjectPL.getString("@" + FIELD_I_BROJ_PL_ZBIRNI)),
+                            Integer.parseInt(jsonInnerObjectPL.getString("@" + FIELD_I_BROJ_PL)),
+                            Integer.parseInt(jsonInnerObjectPL.getString("@" + FIELD_I_KOMITENT)),
+                            jsonInnerObjectPL.getString("@" + FIELD_S_NAZIV),
+                            jsonInnerObjectPL.getString("@" + FIELD_S_ADRESA),
+                            jsonInnerObjectPL.getString("@" + FIELD_S_TELEFON),
+                            jsonInnerObjectPL.getString("@" + FIELD_S_NAPOMENA),
+                            Integer.parseInt(jsonInnerObjectPL.getString("@" + FIELD_I_KOLETA)),
+                            Double.parseDouble(jsonInnerObjectPL.getString("@" + FIELD_D_TEZINA))
+                    );
+
+                    addContact(zbirnalista);
+
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        //izvla�enje statusa iz primljenog JSONa
+        //JSONObject jsonInnerObject = jsonInnerObjectPodaci.getJSONObject("lista_tj");
+        //JSONArray jsonMainNode = jsonInnerObject.optJSONArray("status");
+    }
+
 
 }
