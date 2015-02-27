@@ -19,6 +19,8 @@ public class ZbirnaLista {
     public static final String ZL_NAPOMENA = "napomena";
 
 
+
+
   //	private fields
     private int id_pl_zbirni;
     private int broj_prijevoznog_lista;
@@ -161,7 +163,15 @@ public class ZbirnaLista {
     }
 
     public String toStatus(){
-        return   "Tel: "+ this.telefon_primatelja+", Koleta: "+ Integer.valueOf(this.koleta).toString();
+         return   "Koleta: "+ Integer.valueOf(this.koleta).toString() +", Težina: "+ Double.valueOf(this.tezina).toString() ;
     }
 
+    public String toOpisLista(){
+        return   "Koleta: "+ Integer.valueOf(this.koleta).toString() +", Težina: "+ Double.valueOf(this.tezina).toString() ;
+
+    }
+
+    public String toOpisDetail(){
+        return   "Koleta: "+ Integer.valueOf(this.koleta).toString() +", Težina: "+ Double.valueOf(this.tezina).toString() ;
+    }
 }

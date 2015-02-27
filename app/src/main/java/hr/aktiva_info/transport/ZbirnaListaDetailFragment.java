@@ -5,15 +5,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import hr.aktiva_info.transport.data.TransportneJedinice;
 import hr.aktiva_info.transport.data.ZbirnaLista;
+import hr.aktiva_info.transport.data.ZbirnaListaDB;
 
 import java.text.NumberFormat;
+import java.util.List;
 
 public class ZbirnaListaDetailFragment extends Fragment {
 
     ZbirnaLista zbirna_lista;
+    ZbirnaListaDB _db;
+    private List<TransportneJedinice> transportne_jedinice ;
+    private TransportnaJedinicaArrayAdapter adapter;
+
 
 //    Required no-args constructor
     public ZbirnaListaDetailFragment() {}
@@ -21,11 +29,15 @@ public class ZbirnaListaDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        _db = new ZbirnaListaDB(getActivity());
+
         Bundle b = getArguments();
         if (b != null && b.containsKey(ZbirnaLista.ZL_BROJ_PL)) {
             zbirna_lista=new ZbirnaLista(b);
         }
-    }
+
+
+      }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -46,12 +58,31 @@ public class ZbirnaListaDetailFragment extends Fragment {
             TextView tv2 = (TextView) view.findViewById(R.id.tvAdresaKomitenta);
             tv2.setText(zbirna_lista.getAdresa_komitenta());
 
-            TextView tv3 = (TextView) view.findViewById(R.id.tvStatusnaLinija);
-            tv3.setText(zbirna_lista.toStatus());
+            TextView tv3 = (TextView) view.findViewById(R.id.tvTelefonKomitenta);
+            tv3.setText(zbirna_lista.getTelefon_primatelja());
 
+
+            TextView tv5= (TextView) view.findViewById(R.id.tvNapomena);
+            tv5.setText(zbirna_lista.getNapomena());
+
+
+            TextView tv6 = (TextView) view.findViewById(R.id.tvStatusnaLinija);
+            tv6.setText(zbirna_lista.toOpisDetail());
 
            // ImageView ivPicture = (ImageView) view.findViewById(R.id.ivFlowerImage);
             //ivPicture.setImageResource(flower.getImageResource());
+
+
+            _db.setTransportne_jedinice(_db.getTransportneJedinice(zbirna_lista.getBroj_prijevoznog_lista()));
+
+            adapter = new TransportnaJedinicaArrayAdapter(getActivity(),
+                    R.layout.transportna_jedinica_listitem,
+                    _db.getTransportne_jedinice());
+
+
+            ListView listViewTJ = (ListView) view.findViewById(R.id.lista_transportih_jedinica);
+
+            listViewTJ.setAdapter(adapter);
 
         }
 
