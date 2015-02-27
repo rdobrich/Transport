@@ -18,7 +18,7 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
 
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
 
     // Database Name
     private static final String DATABASE_NAME = "transport";
@@ -278,6 +278,8 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
 
 
     public void UcitajPodatkeIzSOAP(String result ) throws JSONException {
+
+        Log.d("TRANSPORT", "UcitajPodatkeIzSOAP");
         JSONObject jsonResponse = null;
         try {
             jsonResponse = new JSONObject(result);
@@ -285,6 +287,7 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
             e.printStackTrace();
         }
         try {
+            Log.d ("TRANSPORT","load podaci");
             JSONObject jsonInnerObjectPodaci = jsonResponse.getJSONObject("podaci");
             JSONObject jsonInnerObjectLista = jsonInnerObjectPodaci.getJSONObject("lista");
             JSONObject jsonInnerObjectListaTransportnihJedinica = jsonInnerObjectPodaci.getJSONObject("lista_tj");
@@ -335,13 +338,14 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
             TransportneJedinice tj_d = new TransportneJedinice();
 
             // dodavanje transportnih jedinica
+            Log.d ("TRANSPORT","tj");
             try {
                 JSONArray json_pl = jsonInnerObjectListaTransportnihJedinica.getJSONArray("tj");
                 for(int i = 0; i<json_pl.length();i++) {
                     JSONObject jsonChildNode = json_pl.getJSONObject(i);
                     String key_id = jsonChildNode.optString("@"+tj_d.TJ_OZNAKA);
 
-                    if (key_id != null & key_id != "") {
+                    if (key_id != null && key_id != "") {
                         TransportneJedinice tj = new TransportneJedinice(
                                 Integer.parseInt(jsonChildNode.optString("@" + tj_d.TJ_KEY_ID)),
                                 jsonChildNode.optString("@" + tj_d.TJ_OZNAKA),

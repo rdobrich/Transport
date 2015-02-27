@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@drawable/list_selector"
     android:layout_height="match_parent">
+
+
+
+
+
+    <ImageView
+        android:id="@+id/image_statusTJ"
+        android:layout_width="50dip"
+        android:layout_height="50dip"
+        android:src="@drawable/lorry_flatbed"
+        android:dividerHeight="10dp"/>
+
 
     <TextView
         android:id="@+id/tvTJOznaka"
@@ -9,5 +22,19 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:text="@string/placeholder"
+        android:layout_toRightOf="@+id/image_statusTJ"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-</LinearLayout>
+    <TextView
+        android:id="@+id/tvTJPrikaz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/tvTJOznaka"
+        android:text="@string/placeholder"
+        android:layout_toRightOf="@+id/image_statusTJ"
+        android:dividerHeight="5dp"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+
+</RelativeLayout>

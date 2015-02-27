@@ -16,11 +16,28 @@
         android:layout_alignParentLeft="true"
          android:layout_marginRight="5dip">
 
-        <ImageView
-            android:id="@+id/list_image"
-            android:layout_width="5dip"
-            android:layout_height="5dip"
-            android:src="@drawable/princess_flower"/>
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <ImageView
+                android:id="@+id/list_image"
+                android:layout_width="50dip"
+                android:layout_height="50dip"
+                android:paddingBottom="5dp"
+                android:src="@drawable/lorry_flatbed"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5/5"
+                android:gravity="center_horizontal"
+                android:id="@+id/status_pl"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+            </LinearLayout>
+
 
     </LinearLayout>
 
@@ -31,14 +48,14 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
         android:layout_toRightOf="@+id/thumbnail"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="0dp"
         android:text="@string/placeholder"
         android:textAppearance="?android:attr/textAppearanceMedium" />
     <TextView
         android:id="@+id/tvAdresaKomitenta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="0dp"
         android:layout_below="@+id/tvNazivKomitenta"
         android:layout_toRightOf="@+id/thumbnail"
         android:text="@string/placeholder"
@@ -47,7 +64,7 @@
         android:id="@+id/tvStatusnaLinija"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="0dp"
         android:layout_below="@+id/tvAdresaKomitenta"
         android:layout_toRightOf="@+id/thumbnail"
         android:text="@string/placeholder"
@@ -61,4 +78,6 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"/>
 
-   </RelativeLayout>
+
+
+</RelativeLayout>

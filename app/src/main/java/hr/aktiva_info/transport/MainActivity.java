@@ -33,7 +33,7 @@ implements ZbirnaListaListFragment.Callbacks
 
         fragment= new ZbirnaListaListFragment();
         getFragmentManager().beginTransaction()
-                .add(R.id.listContainer,fragment)
+                .replace(R.id.listContainer,fragment)
                 .commit();
 
 
@@ -85,6 +85,8 @@ implements ZbirnaListaListFragment.Callbacks
 //                    .create()
 //                    .show();
 */
+
+
             Intent intent=new Intent();
             intent.setClass(this,MyPrefsActivity.class);
             startActivityForResult(intent,1002);

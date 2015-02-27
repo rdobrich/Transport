@@ -38,7 +38,7 @@ public class SOAPExec
     private String _method ="";
     ProgressDialog _dialog;
     private ZbirnaListaDB zbirnalistaDB;
-
+    private boolean _isNetwork;
 
     public SOAPExec(String executeString, String method, Context context) {
         this._executeString = executeString;
@@ -48,7 +48,9 @@ public class SOAPExec
     @Override
     protected void onPreExecute() {
         //if you want, start progress dialog here
+        _isNetwork=false;
         if (isNetworkAvailable()) {
+            _isNetwork=true;
             Log.d("TRANSPORT", "Mreža postoji");
             _dialog = new ProgressDialog(_context);
             _dialog.setMessage("Dohvaćam podatke sa servera...");
@@ -61,6 +63,9 @@ public class SOAPExec
     @Override
     protected String doInBackground(String... urls) {
         String webResponse = "";
+        if (_isNetwork==false) {
+            return webResponse;
+        }
         try{
             final String NAMESPACE = "http://www.aktiva-info.hr/";
             final String URL = "http://www.aktiva-info.hr/DBI/databaseInterface.asmx";
@@ -134,7 +139,12 @@ public class SOAPExec
 
     @Override
     protected void onPostExecute(String result) {
-
+        if (_isNetwork==false){
+            return;
+        }
+        if (result=="" || result== null){
+            return;
+        }
         zbirnalistaDB=(ZbirnaListaDB) new ZbirnaListaDB(_context);
 
         if(_method.equals("zbirna_lista")) {

@@ -43,6 +43,8 @@ public class TransportnaJedinicaArrayAdapter extends ArrayAdapter {
         TextView tv = (TextView) view.findViewById(R.id.tvTJOznaka);
         tv.setText(tj.getOznaka_transportne_jedinice());
 
+        TextView tv2 = (TextView) view.findViewById(R.id.tvTJPrikaz);
+        tv2.setText(tj.getOPisReda());
 
         return view;
     }

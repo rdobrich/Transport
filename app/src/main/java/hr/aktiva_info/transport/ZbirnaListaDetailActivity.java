@@ -10,7 +10,7 @@ public class ZbirnaListaDetailActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_flower_detail);
+		setContentView(R.layout.activity_detail);
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -37,5 +37,6 @@ public class ZbirnaListaDetailActivity extends Activity {
         }
 		return true;
 	}
+
 
 }

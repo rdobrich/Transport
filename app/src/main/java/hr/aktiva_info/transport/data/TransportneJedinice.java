@@ -1,5 +1,7 @@
 package hr.aktiva_info.transport.data;
 
+import android.os.Bundle;
+
 /**
  * Created by radovan on 26.2.2015..
  */
@@ -11,6 +13,7 @@ public class TransportneJedinice {
     public static final String TJ_TEZINA = "tezina";
     public static final String TJ_BROJ_PL = "broj_prijevoznog_lista";
     public static final String TJ_TIP = "sifra_tipa_transportne_jedinice";
+    public static final String TJ_OPIS = "opis_transportne_jedinice";
 
 
 
@@ -70,5 +73,19 @@ public class TransportneJedinice {
 
     public void setTransportna_jedinica_id(Integer transportna_jedinica_id) {
         this.transportna_jedinica_id = transportna_jedinica_id;
+    }
+
+    public String  getOPisReda() {
+       return this.getSifra_tipa_transportne_jedinice()+", Težina"+Double.valueOf(this.tezina).toString() ;
+    }
+
+
+    public Bundle toBundle() {
+        Bundle b = new Bundle();
+        b.putString(TJ_OZNAKA, this.oznaka_transportne_jedinice);
+        b.putString(TJ_OPIS, this.getOPisReda());
+
+
+        return b;
     }
 }

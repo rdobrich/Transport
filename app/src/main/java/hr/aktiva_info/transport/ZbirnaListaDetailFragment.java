@@ -1,10 +1,12 @@
 package hr.aktiva_info.transport;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -38,6 +40,7 @@ public class ZbirnaListaDetailFragment extends Fragment {
 
 
       }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,7 +83,22 @@ public class ZbirnaListaDetailFragment extends Fragment {
                     _db.getTransportne_jedinice());
 
 
-            ListView listViewTJ = (ListView) view.findViewById(R.id.lista_transportih_jedinica);
+            final ListView listViewTJ = (ListView) view.findViewById(R.id.lista_transportih_jedinica);
+
+
+            listViewTJ.setOnItemClickListener(new   AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view,
+                                        int position, long id) {
+                    TransportneJedinice tj=_db.getTransportne_jedinice().get(position);
+                    Bundle b = tj.toBundle();
+                    Intent intent=new Intent();
+                    intent.setClass(getActivity(),TransportnaJedinicaStatusActivity.class);
+                    startActivityForResult(intent,1005);
+                }
+            });
+
+
 
             listViewTJ.setAdapter(adapter);
 
@@ -88,5 +106,10 @@ public class ZbirnaListaDetailFragment extends Fragment {
 
         return view;
     }
+
+
+
+
+
 
 }
