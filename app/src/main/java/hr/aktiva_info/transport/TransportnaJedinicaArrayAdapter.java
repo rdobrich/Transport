@@ -27,6 +27,8 @@ public class TransportnaJedinicaArrayAdapter extends ArrayAdapter {
         this.objects = objects;
     }
 
+
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
