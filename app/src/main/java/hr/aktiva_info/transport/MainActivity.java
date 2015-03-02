@@ -23,6 +23,7 @@ implements ZbirnaListaListFragment.Callbacks
 
 
     public static final String ZBIRNA_LISTA_BUNDLE = "ZBIRNA_LISTA_BUNDLE";
+    public static final String TJ_BUNDLE = "TJ_BUNDLE";
     private static final int REQUEST_CODE = 1001;
     private  ZbirnaListaListFragment fragment;
 

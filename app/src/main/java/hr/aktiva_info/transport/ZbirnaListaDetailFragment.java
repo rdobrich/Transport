@@ -70,7 +70,7 @@ public class ZbirnaListaDetailFragment extends Fragment {
 
 
             TextView tv6 = (TextView) view.findViewById(R.id.tvStatusnaLinija);
-            tv6.setText(zbirna_lista.toOpisDetail());
+            tv6.setText(zbirna_lista.toOpisDetail()+"   " + zbirna_lista.toStatusRada());
 
            // ImageView ivPicture = (ImageView) view.findViewById(R.id.ivFlowerImage);
             //ivPicture.setImageResource(flower.getImageResource());
@@ -92,8 +92,9 @@ public class ZbirnaListaDetailFragment extends Fragment {
                                         int position, long id) {
                     TransportneJedinice tj=_db.getTransportne_jedinice().get(position);
                     Bundle b = tj.toBundle();
-                    Intent intent=new Intent();
-                    intent.setClass(getActivity(),TransportnaJedinicaStatusActivity.class);
+                    Intent intent=new Intent(getActivity(),TransportnaJedinicaStatusActivity.class);
+                    intent.putExtras(b);
+
                     startActivityForResult(intent,1005);
                 }
             });

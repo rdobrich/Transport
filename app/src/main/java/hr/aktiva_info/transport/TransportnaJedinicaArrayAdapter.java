@@ -1,6 +1,5 @@
 package hr.aktiva_info.transport;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import hr.aktiva_info.transport.data.TransportneJedinice;
-import hr.aktiva_info.transport.data.ZbirnaLista;
 
 /**
  * Created by radovan on 27.2.2015..
@@ -46,7 +44,7 @@ public class TransportnaJedinicaArrayAdapter extends ArrayAdapter {
         tv.setText(tj.getOznaka_transportne_jedinice());
 
         TextView tv2 = (TextView) view.findViewById(R.id.tvTJPrikaz);
-        tv2.setText(tj.getOPisReda());
+        tv2.setText(tj.getOpisRada());
 
         return view;
     }

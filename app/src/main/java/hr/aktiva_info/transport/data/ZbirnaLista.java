@@ -17,7 +17,9 @@ public class ZbirnaLista {
     public static final String ZL_KOLETA = "koleta";
     public static final String ZL_TEZINA = "tezina";
     public static final String ZL_NAPOMENA = "napomena";
-
+    public static final String ZL_UTOVARENO = "utovareno";
+    public static final String ZL_ISPORUCENO ="isporuceno";
+    public static final String ZL_OSTECENO = "osteceno";
 
 
 
@@ -31,6 +33,9 @@ public class ZbirnaLista {
     private String napomena;
     private int koleta;
     private double tezina;
+    private int utovareno;
+    private int isporuceno;
+    private int osteceno;
 
     public String getTelefon_primatelja() {
         return telefon_primatelja;
@@ -48,7 +53,7 @@ public class ZbirnaLista {
         this.napomena = napomena;
     }
 
-    public ZbirnaLista(int id_pl_zbirni, int broj_prijevoznog_lista, int id_komitenta, String naziv_komitenta, String adresa_komitenta,String telefon_primatelja,String napomena, int koleta, double tezina) {
+    public ZbirnaLista(int id_pl_zbirni, int broj_prijevoznog_lista, int id_komitenta, String naziv_komitenta, String adresa_komitenta,String telefon_primatelja,String napomena, int koleta, double tezina,int utovareno,int isporuceno,int osteceno) {
         this.id_pl_zbirni = id_pl_zbirni;
         this.broj_prijevoznog_lista = broj_prijevoznog_lista;
         this.id_komitenta = id_komitenta;
@@ -58,6 +63,34 @@ public class ZbirnaLista {
         this.napomena=napomena;
         this.koleta = koleta;
         this.tezina = tezina;
+        this.utovareno=utovareno;
+        this.isporuceno=isporuceno;
+        this.osteceno=osteceno;
+
+    }
+
+    public int getUtovareno() {
+        return utovareno;
+    }
+
+    public void setUtovareno(int utovareno) {
+        this.utovareno = utovareno;
+    }
+
+    public int getIsporuceno() {
+        return isporuceno;
+    }
+
+    public void setIsporuceno(int isporuceno) {
+        this.isporuceno = isporuceno;
+    }
+
+    public int getOsteceno() {
+        return osteceno;
+    }
+
+    public void setOsteceno(int osteceno) {
+        this.osteceno = osteceno;
     }
 
     public static String getZlName() {
@@ -135,6 +168,10 @@ public class ZbirnaLista {
             this.napomena = b.getString(ZL_NAPOMENA);
 
             this.tezina = b.getDouble(ZL_TEZINA);
+            this.utovareno=b.getInt(ZL_UTOVARENO);
+            this.isporuceno=b.getInt(ZL_ISPORUCENO);
+            this.osteceno=b.getInt(ZL_OSTECENO);
+
         }
     }
 
@@ -145,6 +182,9 @@ public class ZbirnaLista {
         b.putInt(ZL_ID_KOMITENTA, this.id_komitenta);
         b.putInt(ZL_KOLETA, this.koleta);
         b.putInt(ZL_BROJ_PL, this.broj_prijevoznog_lista);
+        b.putInt(ZL_UTOVARENO, this.utovareno);
+        b.putInt(ZL_ISPORUCENO, this.isporuceno);
+        b.putInt(ZL_OSTECENO, this.osteceno);
 
         b.putString(ZL_NAZIV_KOMITENTA, this.naziv_komitenta);
         b.putString(ZL_ADRESA_KOMITENTA, this.adresa_komitenta);
@@ -173,5 +213,9 @@ public class ZbirnaLista {
 
     public String toOpisDetail(){
         return   "Koleta: "+ Integer.valueOf(this.koleta).toString() +", Težina: "+ Double.valueOf(this.tezina).toString() ;
+    }
+
+    public String toStatusRada(){
+        return    Integer.valueOf(this.utovareno).toString() +"/"+ Integer.valueOf(this.isporuceno).toString();
     }
 }

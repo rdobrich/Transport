@@ -42,7 +42,12 @@ public class ZbirnaListaArrayAdapter extends ArrayAdapter<ZbirnaLista> {
 
         TextView tv3 = (TextView) view.findViewById(R.id.tvStatusnaLinija);
         tv3.setText(zbirna_lista.toStatus());
-		
+
+        TextView tv4 = (TextView) view.findViewById(R.id.status_pl);
+        tv4.setText(zbirna_lista.toStatusRada());
+
+
+
 		return view;
 	}
 
