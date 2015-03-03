@@ -43,7 +43,8 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
 
     public TransportneJedinice _tj;
 
-    private List<TransportneJedinice> transportne_jedinice ;
+    private List<TransportneJedinice> transportne_jedinice =null;
+    private List<ZbirnaLista>zbirne_liste;
 
     public List<TransportneJedinice> getTransportne_jedinice() {
         return transportne_jedinice;
@@ -57,6 +58,14 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         _tj=new TransportneJedinice();
 
+    }
+
+    public List<ZbirnaLista> getZbirne_liste() {
+        return zbirne_liste;
+    }
+
+    public void setZbirne_liste(List<ZbirnaLista> zbirne_liste) {
+        this.zbirne_liste = zbirne_liste;
     }
 
     // Creating Tables
@@ -221,12 +230,15 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
 
     // Getting All Contacts
     public List<ZbirnaLista> getZbirneListe() {
-        List<ZbirnaLista> zbirneliste = new ArrayList<ZbirnaLista>();
+
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_ZBIRNA_LISTA;
 
         SQLiteDatabase db = this.getWritableDatabase();
-
+        if (zbirne_liste == null){
+            zbirne_liste = new ArrayList<ZbirnaLista>();
+        }
+        zbirne_liste.clear();
         String query="select key_id,\n" +
                 "a.broj_prijevoznog_lista,id_komitenta,naziv_primatelja,adresa_primatelja,telefon_primatelja,napomena,koleta,a.tezina,\n" +
                 "ifnull(sum(tj.utovareno),0) as utovareno, \n" +
@@ -254,12 +266,12 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
                         Integer.parseInt(cursor.getString(11))//osteceno
                 );
                 // Adding contact to list
-                zbirneliste.add(zbirnalista);
+                zbirne_liste.add(zbirnalista);
             } while (cursor.moveToNext());
         }
 
         // return contact list
-        return zbirneliste;
+        return zbirne_liste;
     }
 
 

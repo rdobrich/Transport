@@ -21,7 +21,7 @@ import java.util.List;
 public class ZbirnaListaListFragment extends ListFragment {
 
 
-    private List<ZbirnaLista> zbirne_liste ;
+    private List<ZbirnaLista> zbirne_liste =null;
     private ZbirnaListaDB zbirnalistaDB;
     private  Callbacks activity;
     private ZbirnaListaArrayAdapter adapter;
@@ -38,7 +38,6 @@ public class ZbirnaListaListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         zbirnalistaDB=new ZbirnaListaDB(getActivity());
-        //zbirnalistaDB.InitTestData();
 
         zbirne_liste = zbirnalistaDB.getZbirneListe();
         adapter = new ZbirnaListaArrayAdapter(getActivity(),
@@ -79,7 +78,10 @@ public class ZbirnaListaListFragment extends ListFragment {
     }
 
     public void refreshAdapter() {
+        zbirne_liste.clear();
         zbirne_liste = zbirnalistaDB.getZbirneListe();
-        this.adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
+
+
 }

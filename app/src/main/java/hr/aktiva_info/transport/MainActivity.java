@@ -2,6 +2,8 @@ package hr.aktiva_info.transport;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.ListFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import hr.aktiva_info.transport.data.SOAPExec;
@@ -34,7 +37,7 @@ implements ZbirnaListaListFragment.Callbacks
 
         fragment= new ZbirnaListaListFragment();
         getFragmentManager().beginTransaction()
-                .replace(R.id.listContainer,fragment)
+                .replace(R.id.listContainer, fragment)
                 .commit();
 
 
@@ -66,6 +69,17 @@ implements ZbirnaListaListFragment.Callbacks
 
             dialog.show(getFragmentManager(),"MyDialog");
 
+        }
+
+        if (requestCode==REQUEST_CODE ) {
+            //super.onActivityResult(requestCode, resultCode, data);
+//            // Perform your task and get data from Intent (data parameter)
+
+            fragment.refreshAdapter();
+           // Toast.makeText (this,"Osvježi listu",Toast.LENGTH_SHORT).show();
+
+//
+//
         }
     }
 
@@ -144,4 +158,7 @@ implements ZbirnaListaListFragment.Callbacks
             startActivityForResult(intent, REQUEST_CODE);
         }
     }
+
+
+
 }

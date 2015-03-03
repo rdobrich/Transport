@@ -19,6 +19,8 @@ public class TransportnaJedinicaArrayAdapter extends ArrayAdapter {
     private Context context;
     private List<TransportneJedinice> objects;
 
+    private LayoutInflater mLayoutInflater = null;
+
     public TransportnaJedinicaArrayAdapter(Context context, int resource, List<TransportneJedinice> objects) {
         super(context,resource,objects);
         this.context = context;
@@ -48,4 +50,18 @@ public class TransportnaJedinicaArrayAdapter extends ArrayAdapter {
 
         return view;
     }
+
+    @Override
+    public int getCount() {
+        return objects.size();
+    }
+    @Override
+    public Object getItem(int pos) {
+        return objects.get(pos);
+    }
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 }
+
