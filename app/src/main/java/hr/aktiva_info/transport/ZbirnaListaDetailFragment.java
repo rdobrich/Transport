@@ -23,7 +23,7 @@ public class ZbirnaListaDetailFragment extends Fragment {
     ZbirnaListaDB _db;
     private List<TransportneJedinice> transportne_jedinice ;
     private TransportnaJedinicaArrayAdapter adapter;
-
+    private View _view;
 
 //    Required no-args constructor
     public ZbirnaListaDetailFragment() {}
@@ -46,30 +46,30 @@ public class ZbirnaListaDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 //        Load the layout
-        View view = inflater.inflate(R.layout.zbirna_lista_detail_fragment, container, false);
+        _view = inflater.inflate(R.layout.zbirna_lista_detail_fragment, container, false);
 
         if (zbirna_lista != null) {
 
             //Display values and image
-            TextView tvName = (TextView) view.findViewById(R.id.tvNazivKomitenta);
+            TextView tvName = (TextView) _view.findViewById(R.id.tvNazivKomitenta);
             tvName.setText(zbirna_lista.getNaziv_komitenta());
 
             //TextView tvInstructions = (TextView) view.findViewById(R.id.tvInstructions);
             //tvInstructions.setText(flower.getInstructions());
 
             NumberFormat fmt = NumberFormat.getCurrencyInstance();
-            TextView tv2 = (TextView) view.findViewById(R.id.tvAdresaKomitenta);
+            TextView tv2 = (TextView) _view.findViewById(R.id.tvAdresaKomitenta);
             tv2.setText(zbirna_lista.getAdresa_komitenta());
 
-            TextView tv3 = (TextView) view.findViewById(R.id.tvTelefonKomitenta);
+            TextView tv3 = (TextView) _view.findViewById(R.id.tvTelefonKomitenta);
             tv3.setText(zbirna_lista.getTelefon_primatelja());
 
 
-            TextView tv5= (TextView) view.findViewById(R.id.tvNapomena);
+            TextView tv5= (TextView) _view.findViewById(R.id.tvNapomena);
             tv5.setText(zbirna_lista.getNapomena());
 
 
-            TextView tv6 = (TextView) view.findViewById(R.id.tvStatusnaLinija);
+            TextView tv6 = (TextView) _view.findViewById(R.id.tvStatusnaLinija);
             tv6.setText(zbirna_lista.toOpisDetail()+"   " + zbirna_lista.toStatusRada());
 
            // ImageView ivPicture = (ImageView) view.findViewById(R.id.ivFlowerImage);
@@ -83,7 +83,7 @@ public class ZbirnaListaDetailFragment extends Fragment {
                     _db.getTransportne_jedinice());
 
 
-            final ListView listViewTJ = (ListView) view.findViewById(R.id.lista_transportih_jedinica);
+            final ListView listViewTJ = (ListView) _view.findViewById(R.id.lista_transportih_jedinica);
 
 
             listViewTJ.setOnItemClickListener(new   AdapterView.OnItemClickListener() {
@@ -95,7 +95,7 @@ public class ZbirnaListaDetailFragment extends Fragment {
                     Intent intent=new Intent(getActivity(),TransportnaJedinicaStatusActivity.class);
                     intent.putExtras(b);
 
-                    startActivityForResult(intent,1005);
+                    startActivityForResult(intent,1010);
                 }
             });
 
@@ -105,10 +105,26 @@ public class ZbirnaListaDetailFragment extends Fragment {
 
         }
 
-        return view;
+        return _view;
     }
 
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode==1010 ) {
+              //super.onActivityResult(requestCode, resultCode, data);
+//            // Perform your task and get data from Intent (data parameter)
+            _db.setTransportne_jedinice(_db.getTransportneJedinice(zbirna_lista.getBroj_prijevoznog_lista()));
+            adapter.notifyDataSetChanged();
+
+            zbirna_lista=_db.getZbirnaLista(zbirna_lista.getBroj_prijevoznog_lista());
+            TextView tv6 = (TextView) _view.findViewById(R.id.tvStatusnaLinija);
+            tv6.setText(zbirna_lista.toOpisDetail()+"   " + zbirna_lista.toStatusRada());
+//
+//
+       }
+    }
 
 
 

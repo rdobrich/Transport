@@ -175,6 +175,10 @@ public class ZbirnaLista {
         }
     }
 
+    public ZbirnaLista(){
+
+    }
+
     //	Package data for transfer between activities
     public Bundle toBundle() {
         Bundle b = new Bundle();

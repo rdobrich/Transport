@@ -51,7 +51,7 @@
             android:layout_gravity="center_horizontal"
             android:padding="30dp"
             android:layout_marginTop="30dp"
-            />
+            android:onClick="on_click_istovar" />
          <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,7 +60,8 @@
                 android:layout_above="@+id/button_istovar"
                 android:layout_centerHorizontal="true"
                 android:padding="30dp"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+             android:onClick="on_click_utovar" />
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -70,7 +71,8 @@
             android:layout_below="@+id/button_istovar"
             android:padding="30dp"
             android:layout_centerHorizontal="true"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:onClick="on_click_osteceno" />
         </RelativeLayout>
 
     </LinearLayout>

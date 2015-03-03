@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import hr.aktiva_info.transport.data.TransportneJedinice;
 import hr.aktiva_info.transport.data.ZbirnaLista;
@@ -42,9 +43,35 @@ public class TransportnaJedinicaStatusActivity  extends Activity {
 
 
 
+    }
 
+        public void on_click_utovar (View view){
+            _tj.setUtovareno(1);
+            _tj.setIsporuceno(0);
+            _tj.setOsteceno(0);
+
+            _db.TJ_SnimiStatus(_tj);
+            finish();
+        }
+
+
+    public void on_click_istovar (View view){
+        _tj.setUtovareno(1);
+        _tj.setIsporuceno(1);
+        _tj.setOsteceno(0);
+
+        _db.TJ_SnimiStatus(_tj);
+        finish();
     }
 
 
+    public void on_click_osteceno (View view){
+        _tj.setUtovareno(1);
+        _tj.setIsporuceno(0);
+        _tj.setOsteceno(1);
+
+        _db.TJ_SnimiStatus(_tj);
+        finish();
+    }
 
 }

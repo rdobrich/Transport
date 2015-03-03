@@ -227,12 +227,15 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        //Cursor cursor = db.rawQuery(selectQuery, null);
-
-        Cursor cursor = db.query(TABLE_ZBIRNA_LISTA, new String[] { KEY_ID,
-                        FIELD_I_BROJ_PL, FIELD_I_KOMITENT,FIELD_S_NAZIV,FIELD_S_ADRESA,FIELD_S_TELEFON,FIELD_S_NAPOMENA,FIELD_I_KOLETA,FIELD_D_TEZINA,FIELD_SI_UTOVARENO,FIELD_SI_ISPORUCENO,FIELD_SI_OSTECENO}, null,
-                null, null, null, null, null);
-
+        String query="select key_id,\n" +
+                "a.broj_prijevoznog_lista,id_komitenta,naziv_primatelja,adresa_primatelja,telefon_primatelja,napomena,koleta,a.tezina,\n" +
+                "ifnull(sum(tj.utovareno),0) as utovareno, \n" +
+                "ifnull(sum(tj.isporuceno),0) as isporuceno, \n" +
+                "ifnull(sum(tj.osteceno),0) as osteceno\n" +
+                "from zbirna_lista a inner join transportne_jedinice tj on a.broj_prijevoznog_lista=tj.broj_prijevoznog_lista\n" +
+                "group by key_id,\n" +
+                "a.broj_prijevoznog_lista,id_komitenta,naziv_primatelja,adresa_primatelja,telefon_primatelja,napomena,koleta,a.tezina";
+         Cursor cursor=db.rawQuery(query,null);
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
@@ -260,20 +263,49 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
     }
 
 
-/*
-    // Updating single contact
-    public int updateContact(Contact contact) {
+
+    public ZbirnaLista getZbirnaLista( Integer broj_prijevoznog_lista ) {
+        // Select All Query
+        ZbirnaLista zbirnalista =null;
         SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(FIELD_NAZIV, contact.getName());
-        values.put(KEY_ADRESA, contact.getPhoneNumber());
+        String query="select key_id,\n" +
+                "a.broj_prijevoznog_lista,id_komitenta,naziv_primatelja,adresa_primatelja,telefon_primatelja,napomena,koleta,a.tezina,\n" +
+                "ifnull(sum(tj.utovareno),0) as utovareno, \n" +
+                "ifnull(sum(tj.isporuceno),0) as isporuceno, \n" +
+                "ifnull(sum(tj.osteceno),0) as osteceno\n" +
+                "from zbirna_lista a inner join transportne_jedinice tj on a.broj_prijevoznog_lista=tj.broj_prijevoznog_lista\n" +
+                " where a.broj_prijevoznog_lista = " +  Integer.valueOf(broj_prijevoznog_lista).toString() + " \n"+
+                "group by key_id,\n" +
+                "a.broj_prijevoznog_lista,id_komitenta,naziv_primatelja,adresa_primatelja,telefon_primatelja,napomena,koleta,a.tezina";
+        Cursor cursor=db.rawQuery(query,null);
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+             {
+                zbirnalista = new ZbirnaLista(
+                        Integer.parseInt(cursor.getString(0)),// id zbirne liste
+                        Integer.parseInt(cursor.getString(1)),//rbr
+                        Integer.parseInt(cursor.getString(2)),//id_komitenta
+                        cursor.getString(3),//naziv komitenta
+                        cursor.getString(4),//adresa
+                        cursor.getString(5),//telefon
+                        cursor.getString(6),//napomena
+                        Integer.parseInt(cursor.getString(7)),//koleta
+                        Double.valueOf(  cursor.getString(8)), //tezina
+                        Integer.parseInt(cursor.getString(9)),//utovareno
+                        Integer.parseInt(cursor.getString(10)),//isporuceno
+                        Integer.parseInt(cursor.getString(11))//osteceno
+                );
 
-        // updating row
-        return db.update(TABLE_ZBIRNA_LISTA, values, KEY_ID + " = ?",
-                new String[] { String.valueOf(contact.getID()) });
+            }
+        }
+
+        // return contact list
+
+        return zbirnalista;
+
     }
-*/
+
     // Deleting single contact
     public void deleteAllListu( ) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -415,6 +447,24 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
         //JSONObject jsonInnerObject = jsonInnerObjectPodaci.getJSONObject("lista_tj");
         //JSONArray jsonMainNode = jsonInnerObject.optJSONArray("status");
     }
+
+
+    // Updating single contact
+    public int TJ_SnimiStatus(TransportneJedinice _tj) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(_tj.TJ_UTOVARENO, _tj.getUtovareno());
+        values.put(_tj.TJ_ISPORUCENO, _tj.getIsporuceno());
+        values.put(_tj.TJ_OSTECENO, _tj.getOsteceno());
+        values.put(_tj.TJ_OSTECENO_STATUS, _tj.getOsteceno_status());
+
+        // updating row
+       return  db.update(_tj.TJ_NAME, values, _tj.TJ_KEY_ID + " = ?",
+                new String[] { String.valueOf(_tj.getTransportna_jedinica_id()) });
+
+
+     }
 
 
 }
