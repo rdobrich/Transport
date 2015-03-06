@@ -6,11 +6,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
@@ -21,9 +27,9 @@ import hr.aktiva_info.transport.data.ZbirnaListaDB;
 
 import java.util.List;
 
-/**
- * Created by David on 7/16/2014.
- */
+
+
+
 public class ZbirnaListaListFragment extends ListFragment {
 
 
@@ -45,6 +51,7 @@ public class ZbirnaListaListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         zbirnalistaDB = new ZbirnaListaDB(getActivity());
 
@@ -82,6 +89,7 @@ public class ZbirnaListaListFragment extends ListFragment {
 
     public interface Callbacks {
         public void onItemSelected(ZbirnaLista zbirna_lista);
+        public void ScanBarcode (int tip_upita);
     }
 
     @Override
@@ -104,23 +112,8 @@ public class ZbirnaListaListFragment extends ListFragment {
 
 
     public void do_scan_barcode(View view) {
-        Intent intent = new Intent();
-        intent.setAction("com.motorolasolutions.emdk.datawedge.api.ACTION_SOFTSCANTRIGGER");
-        intent.putExtra("com.motorolasolutions.emdk.datawedge.api.EXTRA_PARAMETER", "TOGGLE_SCANNING");
-        getActivity().sendBroadcast(intent);
-
-        getActivity().registerReceiver(new BroadcastReceiver() {
-
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String code = intent.getExtras().getString("com.motorolasolutions.emdk.datawedge.data_string");
-
-                // do something
-                Toast.makeText(getActivity(),"Scan",Toast.LENGTH_SHORT).show();
-                getActivity().unregisterReceiver(this);
-            }
-        }
-                , new IntentFilter("android.intent.action.MAIN"));
-
+        activity.ScanBarcode(1);
     };
+
+
 }

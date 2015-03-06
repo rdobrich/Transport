@@ -333,6 +333,36 @@ public class ZbirnaListaDB extends SQLiteOpenHelper {
 
     }
 
+    public TransportneJedinice getTransportnaJedinica(String oznaka) {
+        // Select All Query
+        TransportneJedinice tj=null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(_tj.TJ_NAME, new String[]{_tj.TJ_KEY_ID, _tj.TJ_OZNAKA, _tj.TJ_TIP, _tj.TJ_TEZINA, _tj.TJ_UTOVARENO, _tj.TJ_ISPORUCENO, _tj.TJ_OSTECENO, _tj.TJ_OSTECENO_STATUS,_tj.TJ_BROJ_PL}, _tj.TJ_OZNAKA + "=?",
+                new String[]{oznaka}, null, null, null, null);
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            {
+                tj = new TransportneJedinice(
+                        Integer.parseInt(cursor.getString(0)),
+                        cursor.getString(1),
+                        Integer.parseInt(cursor.getString(8)),
+                        Double.valueOf(cursor.getString(3)),
+                        cursor.getString(2),
+                        Integer.parseInt(cursor.getString(4)),
+                        Integer.parseInt(cursor.getString(5)),
+                        Integer.parseInt(cursor.getString(6)),
+                        cursor.getString(7)
+                );
+
+            }
+        }
+
+        // return contact list
+        db.close();
+        return tj;
+
+    }
     // Deleting single contact
     public void deleteAllListu() {
         SQLiteDatabase db = this.getWritableDatabase();

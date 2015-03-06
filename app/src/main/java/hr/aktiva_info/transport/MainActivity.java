@@ -8,33 +8,60 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import hr.aktiva_info.transport.data.Barcode;
 import hr.aktiva_info.transport.data.SOAPExec;
+import hr.aktiva_info.transport.data.TransportneJedinice;
 import hr.aktiva_info.transport.data.ZbirnaLista;
+import hr.aktiva_info.transport.data.ZbirnaListaDB;
 
+/*
+ * To receive data via intents from DataWedge, the DataWedge intent plug-in will need to be configured.
+ * The following steps will help you get started...
+ * 1. Launch DataWedge
+ * 2. Create a new profile and give it a name such as "dwdemosample"
+ * 3. Edit the profile
+ * 4. Go into Associated apps, tap the menu button, and add a new app/activity
+ * 5. For the application select com.motorolasolutions.emdk.sample.dwdemosample
+ * 6. For the activity select com.motorolasolutions.emdk.sample.dwdemosample.MainActivty
+ * 7. Go back and disable the keystroke output plug-in (KRIVO!!!!. mora biti enable)
+ * 8. Enable the intent output plug-in
+ * 9. For the intent action enter com.motorolasolutions.emdk.sample.dwdemosample.RECVR
+ * 10. For the intent category enter android.intent.category.DEFAULT
+ *
+ * Now when you run this activity and scan a barcode you should see the barcode data
+ * preceded with additional info (source, symbology and length); see handleDecodeData below.
+ */
 
-public class MainActivity extends Activity
+public class MainActivity extends FragmentActivity
 implements ZbirnaListaListFragment.Callbacks
 {
 
+
     private boolean isTwoPane = false      ;
 
-
+    private Barcode barcode=null;
     public static final String ZBIRNA_LISTA_BUNDLE = "ZBIRNA_LISTA_BUNDLE";
     public static final String TJ_BUNDLE = "TJ_BUNDLE";
     private static final int REQUEST_CODE = 1001;
     private  ZbirnaListaListFragment fragment;
+
+    ZbirnaListaDB _db;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        barcode= new Barcode(getString(R.string.intentAction));
         fragment= new ZbirnaListaListFragment();
         getFragmentManager().beginTransaction()
                 .add(R.id.listContainer, fragment)
@@ -147,6 +174,39 @@ implements ZbirnaListaListFragment.Callbacks
             intent.putExtra(ZBIRNA_LISTA_BUNDLE, b);
             // start with result code
             startActivityForResult(intent, REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void ScanBarcode(int tip_upita) {
+        Intent i = new Intent();
+        // set the intent action using soft scan trigger action string declared earlier
+        i.setAction(barcode.ACTION_SOFTSCANTRIGGER);
+        // add a string parameter to tell DW that we want to toggle the soft scan trigger
+        i.putExtra(barcode.EXTRA_PARAM, barcode.DWAPI_TOGGLE_SCANNING);
+        // now broadcast the intent
+        MainActivity.this.sendBroadcast(i);
+
+    };
+    //    // We need to handle any incoming intents, so let override the onNewIntent method
+
+    @Override
+    public void onNewIntent(Intent i) {
+        //Toast.makeText(MainActivity.this, "Rezultat.", Toast.LENGTH_SHORT).show();
+        barcode=barcode.handleDecodeData(i);
+        _db = new ZbirnaListaDB(MainActivity.this);
+        TransportneJedinice tj=_db.getTransportnaJedinica(barcode.getData());
+        if (tj == null){
+            Toast.makeText(this,barcode.getData(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,barcode.getLabel_type(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,getString(R.string.barcode_nije_prepoznat),Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Bundle b = tj.toBundle();
+            Intent intent = new Intent(MainActivity.this, TransportnaJedinicaStatusActivity.class);
+            intent.putExtras(b);
+
+            startActivityForResult(intent, 1030);
         }
     }
 

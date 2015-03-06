@@ -11,5 +11,6 @@
     <string name="status_tj_osteceno">OŠTEĆENO</string>
     <string name="status_tj_isporuceno">ISPORUČENO</string>
     <string name="status_tj_utovareno">UTOVARENO</string>
-
+    <string name="intentAction">hr.aktiva_info.transport.RECVR</string>
+    <string name="barcode_nije_prepoznat">Barkod nije prepoznat!!!</string>
 </resources>
