@@ -17,20 +17,30 @@
             android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
-                <action android:name="hr.aktiva_info.transport.RECVR"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="hr.aktiva_info.transport.RECVR" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
-
         </activity>
+        <activity
+            android:name=".ZbirnaListaDetailActivity"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="hr.aktiva_info.transport.RECVR" />
 
-        <activity android:name=".ZbirnaListaDetailActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".TransportnaJedinicaStatusActivity" />
         <activity android:name=".MyPrefsActivity" />
+        <activity
+            android:name=".data.BarcodeScan"
+            android:label="@string/title_activity_barcode_scan" >
+        </activity>
     </application>
 
 </manifest>

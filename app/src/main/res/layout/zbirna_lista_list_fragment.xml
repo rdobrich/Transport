@@ -32,7 +32,9 @@
         android:layout_height="50dp"
         android:text="SCAN"
         android:id="@+id/btn_scan"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:drawableTop="@drawable/barcode"
+        android:hint="@string/btn_scan" />
 
 
 </RelativeLayout>

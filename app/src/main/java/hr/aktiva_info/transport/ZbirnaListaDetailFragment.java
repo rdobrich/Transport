@@ -1,5 +1,6 @@
 package hr.aktiva_info.transport;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,9 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import hr.aktiva_info.transport.data.Barcode;
 import hr.aktiva_info.transport.data.TransportneJedinice;
 import hr.aktiva_info.transport.data.ZbirnaLista;
 import hr.aktiva_info.transport.data.ZbirnaListaDB;
@@ -24,6 +27,8 @@ public class ZbirnaListaDetailFragment extends Fragment {
     private List<TransportneJedinice> transportne_jedinice ;
     private TransportnaJedinicaArrayAdapter adapter;
     private View _view;
+    private Callbacks activity;
+    private Barcode barcode=null;
 
 //    Required no-args constructor
     public ZbirnaListaDetailFragment() {}
@@ -33,6 +38,7 @@ public class ZbirnaListaDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         _db = new ZbirnaListaDB(getActivity());
 
+        barcode= new Barcode(getString(R.string.intentAction));
         Bundle b = getArguments();
         if (b != null && b.containsKey(ZbirnaLista.ZL_BROJ_PL)) {
             zbirna_lista=new ZbirnaLista(b);
@@ -103,6 +109,13 @@ public class ZbirnaListaDetailFragment extends Fragment {
 
             listViewTJ.setAdapter(adapter);
 
+            Button btnScan = (Button) _view.findViewById(R.id.btn_scan_tj);
+            btnScan.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    do_scan_barcode(view);
+                }
+            });
+
         }
 
         return _view;
@@ -133,6 +146,19 @@ public class ZbirnaListaDetailFragment extends Fragment {
     }
 
 
+    public interface Callbacks {
+        public void ScanBarcode (int tip_upita);
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.activity = (Callbacks) activity;
+    }
 
 
+
+    public void do_scan_barcode(View view) {
+        activity.ScanBarcode(2);
+    };
 }

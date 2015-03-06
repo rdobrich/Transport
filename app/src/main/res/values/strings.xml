@@ -13,4 +13,6 @@
     <string name="status_tj_utovareno">UTOVARENO</string>
     <string name="intentAction">hr.aktiva_info.transport.RECVR</string>
     <string name="barcode_nije_prepoznat">Barkod nije prepoznat!!!</string>
+    <string name="btn_scan">Pritisni tipku za scan</string>
+    <string name="title_activity_barcode_scan">BarcodeScan</string>
 </resources>
