@@ -100,7 +100,6 @@ public class ZbirnaListaListFragment extends ListFragment {
         zbirnalistaDB.zbirne_liste.clear();
         zbirnalistaDB.getZbirneListeFromDB();
         adapter.notifyDataSetChanged();
-
     }
 
 
