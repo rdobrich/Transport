@@ -193,20 +193,39 @@ implements ZbirnaListaListFragment.Callbacks
     @Override
     public void onNewIntent(Intent i) {
         //Toast.makeText(MainActivity.this, "Rezultat.", Toast.LENGTH_SHORT).show();
-        barcode=barcode.handleDecodeData(i);
-        _db = new ZbirnaListaDB(MainActivity.this);
-        TransportneJedinice tj=_db.getTransportnaJedinica(barcode.getData());
-        if (tj == null){
-            Toast.makeText(this,barcode.getData(),Toast.LENGTH_SHORT).show();
-            Toast.makeText(this,barcode.getLabel_type(),Toast.LENGTH_SHORT).show();
-            Toast.makeText(this,getString(R.string.barcode_nije_prepoznat),Toast.LENGTH_SHORT).show();
-        }
-        else {
-            Bundle b = tj.toBundle();
-            Intent intent = new Intent(MainActivity.this, TransportnaJedinicaStatusActivity.class);
-            intent.putExtras(b);
+        if (i.getAction().contentEquals(barcode.ourIntentAction)) {
+            barcode = barcode.handleDecodeData(i);
+            _db = new ZbirnaListaDB(MainActivity.this);
+            TransportneJedinice tj = _db.getTransportnaJedinica(barcode.getData());
+            if (tj != null) {
+                Bundle b = tj.toBundle();
+                Intent intent = new Intent(MainActivity.this, TransportnaJedinicaStatusActivity.class);
+                intent.putExtras(b);
+                startActivityForResult(intent, 1030);
+                return;
+            }
+            Integer pl ;
+            try {
+                String str=barcode.getData();
+                pl = Integer.parseInt(str);
+            } catch (Exception q){
+                pl=0;
+            }
 
-            startActivityForResult(intent, 1030);
+            if (pl >0 && pl != null) {
+                ZbirnaLista zl = _db.getZbirnaLista(pl);
+                if (zl != null){
+                    onItemSelected(zl);
+                    return;
+                }
+
+            }
+
+            // ako nisi prepoznao tj ili pl
+            Toast.makeText(this, barcode.getData(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, barcode.getLabel_type(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.barcode_nije_prepoznat), Toast.LENGTH_SHORT).show();
+
         }
     }
 

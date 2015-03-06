@@ -39,7 +39,7 @@ public class Barcode {
     public static final String DWAPI_STOP_SCANNING = "STOP_SCANNING";
     public static final String DWAPI_TOGGLE_SCANNING = "TOGGLE_SCANNING";
 
-    private static String ourIntentAction = "";
+    public static String ourIntentAction = "";
 
     public Barcode(String ourIntentAction,String data, String label_type, String source) {
         this.data = data;
