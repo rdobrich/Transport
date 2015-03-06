@@ -2,6 +2,8 @@ package hr.aktiva_info.transport.data;
 
 import android.os.Bundle;
 
+import hr.aktiva_info.transport.R;
+
 /**
  * Created by radovan on 26.2.2015..
  */
@@ -18,7 +20,7 @@ public class TransportneJedinice {
     public static final String TJ_ISPORUCENO = "isporuceno";
     public static final String TJ_OSTECENO = "osteceno";
     public static final String TJ_OSTECENO_STATUS = "osteceno_status";
-
+    public static final String TJ_ZAPIS_ZA_ISPORUKU ="zapis_za_isporuku";
 
 
     private String  oznaka_transportne_jedinice;
@@ -141,9 +143,8 @@ public class TransportneJedinice {
     }
 
     public String getOpisRada() {
-       return this.getSifra_tipa_transportne_jedinice()+", Težina"+Double.valueOf(this.tezina).toString() ;
+       return this.getSifra_tipa_transportne_jedinice()+", Težina: "+Double.valueOf(this.tezina).toString() ;
     }
-
 
     public Bundle toBundle() {
         Bundle b = new Bundle();

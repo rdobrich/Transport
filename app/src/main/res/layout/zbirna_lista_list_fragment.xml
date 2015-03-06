@@ -16,15 +16,23 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <ListView
+
+     <ListView
         android:id="@android:id/list"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/zbirna_lista"
         android:divider="@android:color/transparent"
         android:dividerHeight="5dp"
+        android:layout_marginBottom="50dp"
         android:listSelector="@drawable/list_selector"></ListView>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="SCAN"
+        android:id="@+id/btn_scan"
+        android:layout_alignParentBottom="true" />
 
 
 </RelativeLayout>

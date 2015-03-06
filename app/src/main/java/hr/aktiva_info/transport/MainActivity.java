@@ -37,7 +37,7 @@ implements ZbirnaListaListFragment.Callbacks
 
         fragment= new ZbirnaListaListFragment();
         getFragmentManager().beginTransaction()
-                .replace(R.id.listContainer, fragment)
+                .add(R.id.listContainer, fragment)
                 .commit();
 
 
@@ -121,22 +121,13 @@ implements ZbirnaListaListFragment.Callbacks
     }
 
     public void do_soap_postback(){
-        //AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        ZbirnaListaListFragment fragment= new ZbirnaListaListFragment();
-        getFragmentManager().beginTransaction()
-                .replace(R.id.listContainer,fragment)
-                .commit();
-
-
-        //fragment.refreshAdapter();
-        Log.d("TRANSPORT", "Refresh adapter  " );
-//        builder.setMessage(json)
-//                .setTitle("SOAP Test")
-//                .create()
-//                .show();
+        if (fragment != null) {
+            fragment.refreshAdapter();
+        }
 
     }
+
+
 
     @Override
     public void onItemSelected(ZbirnaLista zbirnaLista) {

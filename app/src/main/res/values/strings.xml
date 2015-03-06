@@ -7,7 +7,9 @@
     <string name="add_to_cart">Add to cart</string>
     <string name="menu_seop">Server...</string>
     <string name="title_activity_tjstatus">Transportna jedinica</string>
-
     <string name="hello_world">Hello world!</string>
+    <string name="status_tj_osteceno">OŠTEĆENO</string>
+    <string name="status_tj_isporuceno">ISPORUČENO</string>
+    <string name="status_tj_utovareno">UTOVARENO</string>
 
 </resources>

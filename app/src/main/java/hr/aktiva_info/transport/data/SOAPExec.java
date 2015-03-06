@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.sql.SQLException;
 
 import hr.aktiva_info.transport.MainActivity;
 
@@ -140,9 +141,11 @@ public class SOAPExec
     @Override
     protected void onPostExecute(String result) {
         if (_isNetwork==false){
+            _dialog.dismiss();
             return;
         }
         if (result=="" || result== null){
+            _dialog.dismiss();
             return;
         }
         zbirnalistaDB=(ZbirnaListaDB) new ZbirnaListaDB(_context);
@@ -163,6 +166,18 @@ public class SOAPExec
             Log.d("TRANSPORT", "SOAP- Finish");
         }
 
+        if(_method.equals("tj_statusi")) {
+            Log.d("TRANSPORT", "SOAP- Ok-slanje statusa");
+            Log.d("TRANSPORT", "SOAP- " + result);
+
+            ZbirnaListaDB _db = new ZbirnaListaDB(_context);
+            try {
+                _db.resetPoslatihStatusa(result);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     private boolean isNetworkAvailable() {

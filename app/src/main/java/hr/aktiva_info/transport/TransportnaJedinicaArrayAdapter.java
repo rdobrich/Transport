@@ -48,6 +48,17 @@ public class TransportnaJedinicaArrayAdapter extends ArrayAdapter {
         TextView tv2 = (TextView) view.findViewById(R.id.tvTJPrikaz);
         tv2.setText(tj.getOpisRada());
 
+        TextView tv3 = (TextView) view.findViewById(R.id.tvTJStatus);
+        tv3.setText("");
+        if (tj.getUtovareno()==1)
+            tv3.setText(this.context.getString(R.string.status_tj_utovareno));
+        if (tj.getIsporuceno()==1)
+            tv3.setText(this.context.getString(R.string.status_tj_isporuceno));
+        if (tj.getOsteceno()==1)
+            tv3.setText(this.context.getString(R.string.status_tj_osteceno));
+
+
+
         return view;
     }
 

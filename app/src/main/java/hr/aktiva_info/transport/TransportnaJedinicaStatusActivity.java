@@ -67,7 +67,7 @@ public class TransportnaJedinicaStatusActivity  extends Activity {
 
     public void on_click_osteceno (View view){
         _tj.setUtovareno(1);
-        _tj.setIsporuceno(0);
+        _tj.setIsporuceno(1);
         _tj.setOsteceno(1);
 
         _db.TJ_SnimiStatus(_tj);

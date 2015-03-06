@@ -116,11 +116,17 @@ public class ZbirnaListaDetailFragment extends Fragment {
               //super.onActivityResult(requestCode, resultCode, data);
 //            // Perform your task and get data from Intent (data parameter)
             _db.setTransportne_jedinice(_db.getTransportneJedinice(zbirna_lista.getBroj_prijevoznog_lista()));
-            adapter.notifyDataSetChanged();
+
 
             zbirna_lista=_db.getZbirnaLista(zbirna_lista.getBroj_prijevoznog_lista());
             TextView tv6 = (TextView) _view.findViewById(R.id.tvStatusnaLinija);
             tv6.setText(zbirna_lista.toOpisDetail()+"   " + zbirna_lista.toStatusRada());
+
+            adapter.notifyDataSetChanged();
+//
+//              zbirne_liste.clear();
+//            zbirne_liste = zbirnalistaDB.getZbirneListe();
+//            adapter.notifyDataSetChanged();
 //
 //
        }

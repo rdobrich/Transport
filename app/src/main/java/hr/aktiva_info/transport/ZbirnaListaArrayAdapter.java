@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import hr.aktiva_info.transport.data.ZbirnaLista;
@@ -46,8 +47,17 @@ public class ZbirnaListaArrayAdapter extends ArrayAdapter<ZbirnaLista> {
         TextView tv4 = (TextView) view.findViewById(R.id.status_pl);
         tv4.setText(zbirna_lista.toStatusRada());
 
-
-
+        ImageView image = (ImageView) view.findViewById(R.id.list_image);
+        if (zbirna_lista.getUtovareno()==0)
+            image.setImageResource(R.drawable.lorry_flatbed);
+        if (zbirna_lista.getUtovareno()>0 && zbirna_lista.getUtovareno()==zbirna_lista.getKoleta())
+            image.setImageResource(R.drawable.lorry);
+        if (zbirna_lista.getUtovareno()>0 && zbirna_lista.getIsporuceno()==0 && zbirna_lista.getUtovareno()<zbirna_lista.getKoleta())
+            image.setImageResource(R.drawable.lorry_add);
+        if (zbirna_lista.getIsporuceno()>0 && zbirna_lista.getIsporuceno()<zbirna_lista.getKoleta())
+            image.setImageResource(R.drawable.lorry_go);
+        if (zbirna_lista.getIsporuceno()>0 && zbirna_lista.getIsporuceno()==zbirna_lista.getKoleta())
+            image.setImageResource(R.drawable.lorry_flatbed);
 		return view;
 	}
 
