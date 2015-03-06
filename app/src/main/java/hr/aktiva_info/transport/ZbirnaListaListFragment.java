@@ -104,7 +104,6 @@ public class ZbirnaListaListFragment extends ListFragment {
 
 
     public void do_scan_barcode(View view) {
-
         Intent intent = new Intent();
         intent.setAction("com.motorolasolutions.emdk.datawedge.api.ACTION_SOFTSCANTRIGGER");
         intent.putExtra("com.motorolasolutions.emdk.datawedge.api.EXTRA_PARAMETER", "TOGGLE_SCANNING");
